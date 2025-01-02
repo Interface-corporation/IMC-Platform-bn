@@ -39,6 +39,13 @@ const returnErrorToUser: ErrorRequestHandler = (errors, _req, res, next) => {
         error = new ErrorHandler(message, 400);
     }
 
+    // For PostgreSQL numeric overflow errors
+    // We need to check the error object structure differently
+    if (error?.name === 'PrismaClientUnknownRequestError' && error?.message?.includes('numeric field overflow')) {
+        const message = "Invalid value provided, check if rating(2 digit) and price(10 digits) are within the required range";
+        error = new ErrorHandler(message, 400);
+    }
+
     if (error.message === "Could not decode base64") {
       const message = "Invalid Images uploaded. One Image shoud not exceed 1.2 mega bytes(MB)";
       error = new ErrorHandler(message, 400);
@@ -83,6 +90,6 @@ export class ErrorHandler extends Error {
 
 //CATCH ASYNCHRONOUS ERROS
 export const asyncCatch = (handler: any) => (req: Request, res: Response, next: NextFunction) =>
-  Promise.resolve(handler(req, res, next)).catch(next);
+                                Promise.resolve(handler(req, res, next)).catch(next);
 
 export default () => [unexpectedRequest, addErrorToRequestLog, returnErrorToUser];
