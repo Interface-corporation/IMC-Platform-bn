@@ -61,6 +61,10 @@ class CartController {
 
     // Validate Cart Quantity and Product Quantity
     const product = await prisma.product.findUnique({ where: { id: req.body.productId } });
+
+    if (!product)
+        return next(ErrorHandler.BadRequest("No product found matching provided productId!"));
+
     if (product && Number(product.stock < quantity))
       return next(ErrorHandler.BadRequest("Cart Quantity can't exceed Product Stock!"));
 
