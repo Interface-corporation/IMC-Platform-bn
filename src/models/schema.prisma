@@ -1,10 +1,10 @@
 generator client {
   provider        = "prisma-client-js" // Generates the Prisma Client
-  previewFeatures = ["driverAdapters", "omitApi", "prismaSchemaFolder"]
+  previewFeatures = ["driverAdapters", "prismaSchemaFolder"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL_LOCAL")
 }
 

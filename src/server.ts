@@ -9,7 +9,6 @@ import { jwtAuthMiddleware } from "@/middleware/passport";
 import { googleAuthStrategy } from "@/middleware/passport";
 import rateLimiter from "@/middleware/rateLimiter";
 import requestLogger from "@/middleware/requestLogger";
-import PgSession from "connect-pg-simple";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
@@ -21,6 +20,7 @@ import { cartRouter } from "@/routes/cart/cartRouter";
 // Routers import
 import { productRouter } from "@/routes/products/productRouter";
 import { userRouter } from "@/routes/users/userRouter";
+import MongoStore from "connect-mongo";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -51,9 +51,9 @@ app.use(cookieParser(process.env.SESSION_SECRET || ""));
 
 app.use(
   session({
-    store: new (PgSession(session))({
-      conString: env.DATABASE_URL_LOCAL,
-      createTableIfMissing: true,
+    store: MongoStore.create({
+        mongoUrl: env.DATABASE_URL_LOCAL, // Your MongoDB connection string
+        ttl: 30 * 60, // Session expiration in seconds (30 minutes)
     }),
     secret: process.env.SESSION_SECRET || "",
     resave: false,
@@ -70,7 +70,7 @@ app.use(passport.session());
 
 jwtAuthMiddleware(passport); //Set UP strategies
 googleAuthStrategy(passport);
-// app.use(requestLogger); // Request logging
+app.use(requestLogger); // Request logging
 
 // Routes
 app.use("/", authenticationRouters);

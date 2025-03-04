@@ -1,38 +1,38 @@
 model Product {
-    id             String     @id @default(uuid())
-    name           String     @db.VarChar(100)
-    price          Decimal      @db.Decimal(10, 2)
-    description    String     
-    ratings        Decimal    @default(0) @db.Decimal(3, 2)
+    id             String             @id @default(auto()) @map("_id") @db.ObjectId
+    name           String
+    price          Float              @default(0) // MongoDB supports Decimal128
+    description    String
+    ratings        Float              @default(0) 
     images         Image[]
     category       Category
     seller         String
-    stock          Int        @db.SmallInt
-    numberOfReviews Int       @default(0)
+    stock          Int
+    numberOfReviews Int               @default(0)
     reviews        Review[]
     cartItems      Cart[]
-    userId         String
+    userId         String             @db.ObjectId
     productionType ProductionTypeEnum
     location       String
-    user           User       @relation(fields: [userId], references: [id])
-    createdAt      DateTime   @default(now())
+    user           User               @relation(fields: [userId], references: [id])
+    createdAt      DateTime           @default(now())
 }
 
 model Image {
-    id             Int        @id @default(autoincrement())
-    productId      String
-    product        Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+    id             String             @id @default(auto()) @map("_id") @db.ObjectId
+    productId      String             @db.ObjectId
+    product        Product            @relation(fields: [productId], references: [id])
     public_id      String
     url            String
 }
 
 model Review {
-    id             Int        @id @default(autoincrement())
-    productId      String
-    product        Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+    id             String             @id @default(auto()) @map("_id") @db.ObjectId
+    productId      String             @db.ObjectId
+    product        Product            @relation(fields: [productId], references: [id])
     name           String
-    user           User       @relation(fields: [userId], references: [id])
-    userId         String
-    rating         Decimal    @db.Decimal(3, 2)
+    userId         String             @db.ObjectId
+    user           User               @relation(fields: [userId], references: [id])
+    rating         Float              @default(0) 
     comment        String
 }

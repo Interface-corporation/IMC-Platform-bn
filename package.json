@@ -8,7 +8,7 @@
     "private": true,
     "scripts": {
         "dev": "NODE_ENV=development tsx watch --clear-screen=false src/index.ts | pino-pretty",
-        "prod": "npm run build && NODE_ENV=production node dist/index.js",
+        "prod": "npm run build && NODE_ENV=production node dist/index.js  | pino-pretty",
         "build": "tsup",
         "start": "node dist/index.js",
         "clean": "rimraf dist coverage",
@@ -18,13 +18,12 @@
         "test": "vitest run",
         "prepare": "husky"
     },
-    "prisma":{
-        "schema":"./src/models"
+    "prisma": {
+        "schema": "./src/models"
     },
     "dependencies": {
         "@asteasolutions/zod-to-openapi": "^7.0.0",
         "@types/compression": "^1.7.5",
-        "@types/connect-pg-simple": "^7.0.3",
         "@types/cookie-parser": "^1.4.7",
         "@types/multer": "^1.4.12",
         "@types/nodemailer": "^6.4.17",
@@ -34,7 +33,7 @@
         "bcryptjs": "^2.4.3",
         "cloudinary": "^2.5.1",
         "compression": "^1.7.5",
-        "connect-pg-simple": "^10.0.0",
+        "connect-mongo": "^5.1.0",
         "cookie-parser": "^1.4.7",
         "cookie-session": "^2.1.0",
         "cors": "^2.8.5",
