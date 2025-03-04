@@ -70,7 +70,7 @@ app.use(passport.session());
 
 jwtAuthMiddleware(passport); //Set UP strategies
 googleAuthStrategy(passport);
-app.use(requestLogger); // Request logging
+// app.use(requestLogger); // Request logging
 
 // Routes
 app.use("/", authenticationRouters);
