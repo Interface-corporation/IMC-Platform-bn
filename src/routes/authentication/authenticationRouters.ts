@@ -21,7 +21,9 @@ authenticationRegistry.registerPath({
   tags: ["Authentication"],
   responses: createApiResponse(UserSchema, "User registered successfully", StatusCodes.OK),
 });
+
 authenticationRouters.post("/register", aunthenticationController.registerUser);
+
 
 //LOGIN WITH CREDENTIALS
 authenticationRegistry.registerPath({
